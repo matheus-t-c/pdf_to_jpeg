@@ -1,0 +1,16 @@
+import fitz  # PyMuPDF
+from PIL import Image
+
+# Abra o arquivo PDF
+pdf_path = ''#Caminho para o PDF que sera transformado em jpeg
+document = fitz.open(pdf_path)
+
+# Converte cada página em uma imagem JPG
+for page_num in range(document.page_count):
+    page = document.load_page(page_num)  # Carrega a página
+    pix = page.get_pixmap()  # Converte para um objeto de imagem
+    
+    # Salva diretamente como JPG usando Pillow
+    img = Image.frombytes('RGB', [pix.width, pix.height], pix.samples)
+    output_path = f'pagina_{page_num + 1}.jpg'
+    img.save(output_path, 'JPEG')  # Salva como JPG
